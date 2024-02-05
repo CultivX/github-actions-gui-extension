@@ -37,18 +37,32 @@ const WorkFlow = () => {
 
   // Effect hook to set up the MutationObserver
   useEffect(() => {
+    const addWorkFlowTabSafely = () => {
+      if (chrome.runtime.lastError) {
+        console.warn("Extension context lost. Skipping addWorkFlowTab.");
+        return;
+      }
+  
+      try {
+        addWorkFlowTab();
+      } catch (error) {
+        console.error("Failed to add workflow tab:", error);
+      }
+    };
+  
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         if (mutation.addedNodes.length) {
-          addWorkFlowTab();
+          addWorkFlowTabSafely();
         }
       });
     });
-
+  
     observer.observe(document.body, { childList: true, subtree: true });
 
     return () => observer.disconnect();
   }, []);
+  
 
   // Add the tab
   useEffect(() => {

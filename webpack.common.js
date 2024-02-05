@@ -9,7 +9,8 @@ module.exports = {
     devtool: 'cheap-module-source-map',
     entry: {
         popup: path.resolve('./src/popup/popup.tsx'),
-        contentScript: path.resolve('./src/workflow/index.tsx')
+        contentScript: path.resolve('./src/workflow/index.tsx'),
+        iconScript: path.resolve('./src/iconScript/index.tsx')
     },
     module: {
         rules: [
@@ -51,6 +52,10 @@ module.exports = {
                     from: path.resolve('src/static/workflow.svg'), 
                     to: path.resolve('dist')
                 },
+                {
+                    from: path.resolve('src/static/actions.svg'), 
+                    to: path.resolve('dist')
+                },
             ]
         }),
         ...getHtmlPlugins([
@@ -67,7 +72,7 @@ module.exports = {
     optimization: {
         splitChunks: {
             chunks(chunk) {
-                return chunk.name !== 'contentScript';
+                return chunk.name !== 'contentScript' && chunk.name !== 'iconScript';
             }
         }
     }
