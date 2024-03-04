@@ -3,7 +3,8 @@
     "name": "GitHub Workflow Extension",
     "version": "1.1",
     "description": "A React-powered Chrome Extension for GitHub",
-    "permissions": ["webNavigation","activeTab"],
+    "permissions": ["webNavigation", "activeTab", "storage", "tabs"],
+    "host_permissions": ["https://github.com/*"],
     "action": {
       "default_popup": "popup.html",
       "default_icon": {
@@ -12,12 +13,10 @@
         "128": "icon48.png"
       }
     },
+    "background": {
+      "service_worker": "background.js"
+    },
     "content_scripts": [
-      // This is for workflow tab, might need update matches rules or logic in js
-      // {
-      //   "matches": ["https://github.com/*/*"],
-      //   "js": ["contentScript.js"]
-      // },
       {
         "matches": ["https://github.com/orgs/*/repositories"],
         "js": ["iconScript.js"]
