@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 import FlashingIcon from './flashingIcon';
 
@@ -47,7 +47,7 @@ const IconScript = () => {
       const repoName = targetRepo ? targetRepo.textContent : '';
 
       if (targetElement && !targetElement.querySelector('.actons-icon')) {
-        const iconContainer = document.createElement('a');
+        const iconContainer = document.createElement('div');
         iconContainer.classList.add('actions-icon');
         targetElement.appendChild(iconContainer);
         const iconRoot = createRoot(iconContainer);
