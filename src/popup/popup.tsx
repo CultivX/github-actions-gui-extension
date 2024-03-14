@@ -28,6 +28,11 @@ const Popup = () => {
     const handleSaveButton = () => {
         chrome.storage.sync.set({ token: token, interval: interval }, () => {
             console.log('Token and interval saved');
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                if (tabs[0] && tabs[0].id) {
+                    chrome.tabs.reload(tabs[0].id);
+                }
+            });
         });
     };
 

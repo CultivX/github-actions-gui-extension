@@ -3,14 +3,12 @@ import { Octokit } from "octokit";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 
-// need users GitHub Token to view workflow status, get this info from popup.tsx
-// const octokit = new Octokit({auth: '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'});
-
 const FlashingIcon = (info) => {
     const [isFlashing, setIsFlashing] = useState(false);
     const [headBranch, setHeadBranch] = useState('');
     const [ghToken, setGHToken] = useState('');
     const [pollingInterval, setPollingInterval] = useState(5000);
+    const [shouldPoll, setShouldPoll] = useState(true);
 
 
     useEffect(() => {
@@ -18,16 +16,27 @@ const FlashingIcon = (info) => {
     }, []);
 
     useEffect(() => {
-        if(ghToken) {
-            const octokit = new Octokit({ auth: ghToken });
-            fetchData(octokit);
-            const intervalId = setInterval(() => fetchData(octokit), pollingInterval);
-            return () => clearInterval(intervalId);
+        if (ghToken && shouldPoll) {
+            try {
+                const octokit = new Octokit({ auth: ghToken });
+                fetchData(octokit);
+                const intervalId = setInterval(() => {
+                    if (shouldPoll) {
+                        fetchData(octokit);
+                    } else {
+                        clearInterval(intervalId);
+                    }
+                }, pollingInterval);
+                return () => clearInterval(intervalId);
+            } catch (error) {
+                console.error('Error:', error);
+                setShouldPoll(false);
+            }
         } else {
-            console.log("Please check your GitHub Token.");
-            
+            console.log('Please check your GitHub Token.');
         }
-    }, [ghToken, pollingInterval]);
+    }, [ghToken, pollingInterval, shouldPoll]);
+    
 
     interface StorageResult {
         token?: string;
@@ -58,26 +67,28 @@ const FlashingIcon = (info) => {
     };
 
     const fetchData = async (octokit) => {
-        setIsFlashing(await accessGitHub(info, octokit));
+        try {
+            setIsFlashing(await accessGitHub(info, octokit));
+        } catch (error) {
+            if (error.status === 401) {
+                console.error('Error: Bad credentials. Please check your GitHub Token.');
+            } else {
+                console.error('Error:', error);
+            }
+            setShouldPoll(false);
+        }
     };
 
     const accessGitHub = async (info, octokit) => {
-        try {
-                const { data } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs', {
-                owner: info.ownerName,
-                repo: info.repoName
-            })
+        const { data } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs', {
+            owner: info.ownerName,
+            repo: info.repoName
+        })
 
-            const runningWorkflow = data.workflow_runs.find(run => run.status === "in_progress" || run.status === "queued" || run.status === "waiting");
-            setHeadBranch(runningWorkflow ? runningWorkflow.head_branch: '');
+        const runningWorkflow = data.workflow_runs.find(run => run.status === "in_progress" || run.status === "queued" || run.status === "waiting");
+        setHeadBranch(runningWorkflow ? runningWorkflow.head_branch: '');
 
-            const hasRunning = !!runningWorkflow;
-            
-            return hasRunning;
-        } catch (error) {
-            console.error('Error:', error);
-            return false;
-        }
+        return !!runningWorkflow;
     };
 
     return (
