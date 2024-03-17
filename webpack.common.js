@@ -11,7 +11,7 @@ module.exports = {
         popup: path.resolve('./src/popup/popup.tsx'),
         background: path.resolve('./src/background/background.js'),
         contentScript: path.resolve('./src/workflow/index.tsx'),
-        iconScript: path.resolve('./src/iconScript/index.tsx')
+        iconScript: path.resolve('./src/iconScript/iconScript.tsx')
     },
     module: {
         rules: [
