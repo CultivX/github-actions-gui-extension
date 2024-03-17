@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Octokit } from "octokit";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import api from "../services/gh-api";
 
 
 const FlashingIcon = (info) => {
