@@ -7,6 +7,7 @@ const FlashingIcon = (info) => {
     const [isFlashing, setIsFlashing] = useState(false);
     const [headBranch, setHeadBranch] = useState('');
     const [ghToken, setGHToken] = useState('');
+    const [hoverInfo, setHoverInfo] = useState('Workflow is running');
     const [pollingInterval, setPollingInterval] = useState(5000);
     const [shouldPoll, setShouldPoll] = useState(true);
 
@@ -88,6 +89,13 @@ const FlashingIcon = (info) => {
         const runningWorkflow = data.workflow_runs.find(run => run.status === "in_progress" || run.status === "queued" || run.status === "waiting");
         setHeadBranch(runningWorkflow ? runningWorkflow.head_branch: '');
 
+        if (runningWorkflow) {
+            const createdAt = new Date(runningWorkflow.created_at).getTime();
+            const now = new Date().getTime();
+            const runningTime = Math.floor((now - createdAt) / 1000);
+            setHoverInfo(`Workflow is running\nRunning time: ${runningTime}s.`);
+        }
+
         return !!runningWorkflow;
     };
 
@@ -96,7 +104,7 @@ const FlashingIcon = (info) => {
             placement="top"
             overlay={
                 <Tooltip id={`tooltip-${info.ownerName}-${info.repoName}`}>
-                    {isFlashing ? 'Workflow is running' : 'No running workflow'}
+                    {isFlashing ? hoverInfo : 'No running workflow'}
                 </Tooltip>
             }
         >
