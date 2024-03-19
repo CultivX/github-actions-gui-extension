@@ -52,7 +52,7 @@ const Popup = () => {
                 <Form.Group className="mb-3">
                     <Form.Label>GitHub Token:</Form.Label>
                     <Form.Control
-                        type="text"
+                        type="password"
                         value={token}
                         onChange={(e) => setToken(e.target.value)}
                     />
