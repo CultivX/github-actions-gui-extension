@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "GitHub Workflow Extension",
     "version": "1.1",
-    "description": "A React-powered Chrome Extension for GitHub",
+    "description": "Local Developement",
     "permissions": ["storage", "tabs"],
     "host_permissions": ["https://github.com/*"],
     "action": {
@@ -13,12 +13,10 @@
         "128": "icon48.png"
       }
     },
-    "background": {
-      "service_worker": "background.js"
-    },
     "content_scripts": [
       {
         "matches": ["https://github.com/*"],
+        "css": ["iconScript.css"],
         "js": ["iconScript.js"]
       }
     ],

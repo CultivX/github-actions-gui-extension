@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Form, Container, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import './popup.css'
 
 const Popup = () => {
@@ -37,41 +35,42 @@ const Popup = () => {
     };
 
     return (
-        <Container>
-            <div className="d-flex justify-content-end mb-3">
-                <OverlayTrigger
-                    placement="auto"
-                    overlay={<Tooltip id="generate-token-tooltip">GitHub Token for get status of workflows</Tooltip>}
-                >
-                    <Button variant="primary" type="submit" onClick={handleGenerateTokenClick}>
-                        Generate new token
-                    </Button>
-                </OverlayTrigger>
-                </div>
-            <Form>
-                <Form.Group className="mb-3">
-                    <Form.Label>GitHub Token:</Form.Label>
-                    <Form.Control
-                        type="password"
-                        value={token}
-                        onChange={(e) => setToken(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Polling Interval (ms):</Form.Label>
-                    <Form.Control
-                        type="number"
-                        value={interval}
-                        onChange={(e) => setInterval(parseInt(e.target.value, 10))}
-                    />
-                </Form.Group>
-                <div className="d-flex justify-content-end">
-                    <Button variant="primary" type="submit" onClick={handleSaveButton}>
-                        Save
-                    </Button>
-                </div>
-            </Form>
-        </Container>
+        // <Container>
+        //     <div className="d-flex justify-content-end mb-3">
+        //         <OverlayTrigger
+        //             placement="auto"
+        //             overlay={<Tooltip id="generate-token-tooltip">GitHub Token for get status of workflows</Tooltip>}
+        //         >
+        //             <Button variant="primary" type="submit" onClick={handleGenerateTokenClick}>
+        //                 Generate new token
+        //             </Button>
+        //         </OverlayTrigger>
+        //         </div>
+        //     <Form>
+        //         <Form.Group className="mb-3">
+        //             <Form.Label>GitHub Token:</Form.Label>
+        //             <Form.Control
+        //                 type="password"
+        //                 value={token}
+        //                 onChange={(e) => setToken(e.target.value)}
+        //             />
+        //         </Form.Group>
+        //         <Form.Group className="mb-3">
+        //             <Form.Label>Polling Interval (ms):</Form.Label>
+        //             <Form.Control
+        //                 type="number"
+        //                 value={interval}
+        //                 onChange={(e) => setInterval(parseInt(e.target.value, 10))}
+        //             />
+        //         </Form.Group>
+        //         <div className="d-flex justify-content-end">
+        //             <Button variant="primary" type="submit" onClick={handleSaveButton}>
+        //                 Save
+        //             </Button>
+        //         </div>
+        //     </Form>
+        // </Container>
+        <h1 className="text-primary text-5xl font-bold">nihao</h1>
     );
 };
 
