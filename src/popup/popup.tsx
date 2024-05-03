@@ -37,9 +37,14 @@ const Popup = () => {
 
     return (
         <div>
-            <button className="btn btn-blue" type="submit" onClick={handleGenerateTokenClick}>
-                Generate new Token
-            </button>
+            <div className="relative has-tooltip">
+                <button className="btn btn-blue" type="submit" onClick={handleGenerateTokenClick}>
+                    Generate New Token
+                </button>
+                <div className='tooltip absolute rounded shadow-lg p-1 bg-gray-600 text-dark-text'>
+                    Access required: repo & workflow
+                </div>
+            </div>
             <form className="w-full max-w-lg">
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full px-3">
