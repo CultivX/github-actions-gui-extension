@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './popup.css'
+import "../styles.css";
 
 const Popup = () => {
     const [token, setToken] = useState('');
@@ -35,42 +36,43 @@ const Popup = () => {
     };
 
     return (
-        // <Container>
-        //     <div className="d-flex justify-content-end mb-3">
-        //         <OverlayTrigger
-        //             placement="auto"
-        //             overlay={<Tooltip id="generate-token-tooltip">GitHub Token for get status of workflows</Tooltip>}
-        //         >
-        //             <Button variant="primary" type="submit" onClick={handleGenerateTokenClick}>
-        //                 Generate new token
-        //             </Button>
-        //         </OverlayTrigger>
-        //         </div>
-        //     <Form>
-        //         <Form.Group className="mb-3">
-        //             <Form.Label>GitHub Token:</Form.Label>
-        //             <Form.Control
-        //                 type="password"
-        //                 value={token}
-        //                 onChange={(e) => setToken(e.target.value)}
-        //             />
-        //         </Form.Group>
-        //         <Form.Group className="mb-3">
-        //             <Form.Label>Polling Interval (ms):</Form.Label>
-        //             <Form.Control
-        //                 type="number"
-        //                 value={interval}
-        //                 onChange={(e) => setInterval(parseInt(e.target.value, 10))}
-        //             />
-        //         </Form.Group>
-        //         <div className="d-flex justify-content-end">
-        //             <Button variant="primary" type="submit" onClick={handleSaveButton}>
-        //                 Save
-        //             </Button>
-        //         </div>
-        //     </Form>
-        // </Container>
-        <h1 className="text-primary text-5xl font-bold">nihao</h1>
+        <div>
+            <button className="btn btn-blue" type="submit" onClick={handleGenerateTokenClick}>
+                Generate new Token
+            </button>
+            <form className="w-full max-w-lg">
+                <div className="flex flex-wrap -mx-3 mb-6">
+                    <div className="w-full px-3">
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                            GitHub Token:
+                        </label>
+                        <input 
+                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                            type="password" 
+                            placeholder="******************"
+                            value={token}
+                            onChange={(e) => setToken(e.target.value)}
+                        />
+                    </div>
+                </div>
+                <div className="flex flex-wrap -mx-3 mb-6">
+                    <div className="w-full md:w-1/2 px-3">
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                            Polling Interval (ms):
+                        </label>
+                        <input 
+                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                            type="text"
+                            value={interval}
+                            onChange={(e) => setInterval(parseInt(e.target.value, 10))}
+                        />
+                    </div>
+                </div>
+                <button className="btn btn-blue" type="submit" onClick={handleSaveButton}>
+                    Save
+                </button>
+            </form>
+        </div>
     );
 };
 
