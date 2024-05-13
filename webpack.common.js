@@ -1,15 +1,16 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlPlugin = require('html-webpack-plugin');
-const tailwindcss = require('tailwindcss');
 const autoprefixer = require('autoprefixer');
+const tailwindcss = require('tailwindcss');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 
 module.exports = {
     mode: "development",
     devtool: 'cheap-module-source-map',
     entry: {
         popup: path.resolve('./src/popup/popup.tsx'),
-        background: path.resolve('./src/background/background.js'),
         contentScript: path.resolve('./src/workflow/index.tsx'),
         iconScript: path.resolve('./src/iconScript/iconScript.tsx')
     },
@@ -21,7 +22,8 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
-                use: ['style-loader', 'css-loader', {
+                test: /\.css$/i,
+                use: [MiniCssExtractPlugin.loader, 'css-loader', {
                     loader: 'postcss-loader',
                     options: {
                         postcssOptions: {
@@ -30,7 +32,6 @@ module.exports = {
                         }
                     }
                 }],
-                test: /\.css$/i,
             },
             {
                 test: /\.(png|jpg|jpeg|gif|woff|woff2|tff|eot|svg)$/,
@@ -39,6 +40,9 @@ module.exports = {
         ]
     },
     plugins: [
+        new MiniCssExtractPlugin({
+            filename: '[name].css'
+        }),
         new CopyPlugin({
             patterns: [
                 {
@@ -68,7 +72,7 @@ module.exports = {
     },
     output: {
         filename: "[name].js",
-        assetModuleFilename: '[name][ext]'
+        assetModuleFilename: '[name][text]'
     },
     optimization: {
         splitChunks: {
