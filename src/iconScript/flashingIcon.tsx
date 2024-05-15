@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Octokit } from "octokit";
 import api from "../services/gh-api";
 import "../styles.css";
-import { getStorageData, accessGitHub } from '../github-access/github-access';
+import { getStorageData, fetchData } from '../github-access/github-access';
 
 
 const FlashingIcon = (info) => {
@@ -22,10 +22,10 @@ const FlashingIcon = (info) => {
         if (ghToken && shouldPoll) {
             try {
                 const octokit = new Octokit({ auth: ghToken });
-                fetchData(octokit);
+                fetchData(octokit, info, setIsFlashing, setShouldPoll, setHeadBranch, setHoverInfo);
                 const intervalId = setInterval(() => {
                     if (shouldPoll) {
-                        fetchData(octokit);
+                        fetchData(octokit, info, setIsFlashing, setShouldPoll, setHeadBranch, setHoverInfo);
                     } else {
                         clearInterval(intervalId);
                     }
@@ -50,18 +50,6 @@ const FlashingIcon = (info) => {
         }
     };
 
-    const fetchData = async (octokit) => {
-        try {
-            setIsFlashing(await accessGitHub(info, octokit, setHeadBranch, setHoverInfo));
-        } catch (error) {
-            if (error.status === 401) {
-                console.error('Error: Bad credentials. Please check your GitHub Token.');
-            } else {
-                console.error('Error:', error);
-            }
-            setShouldPoll(false);
-        }
-    };
 
 
     return (
