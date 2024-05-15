@@ -29,16 +29,19 @@ const IconScript = () => {
     }
   };
 
+  addStyles();
+
   // add SVG behind the repo
-  const addSvgIcon = async () => {
-    const components = document.querySelectorAll('.Box-sc-g0xbh4-0.listviewitem');
-    
+  const addSvgIcon = async (repo_list_class, repo_item_class) => {
+    const components = document.querySelectorAll(repo_list_class);
+
     components.forEach( (component) => {
-      const targetElement = component.querySelector('.NuYbP');
-      // const ownerName = document.URL.split("/")[4];
-      // const targetRepo = component.querySelector('.gPDEWA');
-      // const repoName = targetRepo ? targetRepo.textContent : '';
-      const targetHref = (component.querySelector('[data-testid="issue-count"]') as HTMLAnchorElement).href;
+      const targetElement = component.querySelector(repo_item_class);
+      
+      const is_repo_page = document.URL.split("/")[3] == 'orgs';
+      const target = is_repo_page ? '[data-testid="issue-count"]' : '[data-hovercard-type="repository"]';
+      const targetHref = (component.querySelector(target) as HTMLAnchorElement).href;
+      
       const ownerName = targetHref.split("/")[3];
       const repoName = targetHref.split("/")[4];
 
@@ -52,21 +55,23 @@ const IconScript = () => {
     })
   }
 
-  addStyles();
-
   // Listening Dom
   const observer = new MutationObserver((mutations) => {
-    mutations.forEach(async (mutation) => {
-      if (mutation.type === 'childList') {
-        // check .listviewitem 
-        const components = document.querySelectorAll('.Box-sc-g0xbh4-0.listviewitem');
-        if (components.length > 0) {
-          addSvgIcon();
-          
-          observer.disconnect();
-        }
+    const mutation = mutations[0];
+    if (mutation && mutation.type === 'childList') {
+      // for repositories page
+      const components = document.querySelectorAll('.Box-sc-g0xbh4-0.listviewitem');
+      if (components.length > 0) {
+        addSvgIcon('.Box-sc-g0xbh4-0.listviewitem', '.NuYbP');
+        // observer.disconnect();
       }
-    });
+
+      // for overview page
+      const org_repos = document.querySelector('.org-repos.repo-list');
+      if (org_repos) {
+        addSvgIcon('.private.source.d-block', '.color-fg-muted.f6');
+      }
+    }
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
