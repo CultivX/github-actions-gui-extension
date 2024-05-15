@@ -4,8 +4,6 @@ import FlashingIcon from './flashingIcon';
 
 
 const IconScript = () => {
-  const [objList, setObjList] = useState(false);
-
   // add style for flashing animation
   const addStyles = () => {
     const styleExists = document.head.querySelector('[data-style="animated-path"]');
@@ -36,10 +34,13 @@ const IconScript = () => {
     const components = document.querySelectorAll('.Box-sc-g0xbh4-0.listviewitem');
     
     components.forEach( (component) => {
-      const ownerName = document.URL.split("/")[4];
       const targetElement = component.querySelector('.NuYbP');
-      const targetRepo = component.querySelector('.gPDEWA');
-      const repoName = targetRepo ? targetRepo.textContent : '';
+      // const ownerName = document.URL.split("/")[4];
+      // const targetRepo = component.querySelector('.gPDEWA');
+      // const repoName = targetRepo ? targetRepo.textContent : '';
+      const targetHref = (component.querySelector('[data-testid="issue-count"]') as HTMLAnchorElement).href;
+      const ownerName = targetHref.split("/")[3];
+      const repoName = targetHref.split("/")[4];
 
       if (targetElement && !targetElement.querySelector('.actions-icon')) {
         const iconContainer = document.createElement('div');
@@ -61,7 +62,6 @@ const IconScript = () => {
         const components = document.querySelectorAll('.Box-sc-g0xbh4-0.listviewitem');
         if (components.length > 0) {
           addSvgIcon();
-          setObjList(true);
           
           observer.disconnect();
         }
