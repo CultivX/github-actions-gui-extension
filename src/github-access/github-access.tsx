@@ -1,10 +1,10 @@
-import { Octokit } from "octokit";
-
+import { formatDistanceToNow } from 'date-fns';
 
 interface StorageResult {
     token?: string;
     interval?: number;
 }
+
 // Get stored values for token and interval
 export const getStorageData = (): Promise<StorageResult> => {
     return new Promise((resolve, reject) => {
@@ -28,10 +28,9 @@ export const accessGitHub = async (info, octokit, setHeadBranch, setHoverInfo) =
     setHeadBranch(runningWorkflow ? runningWorkflow.head_branch: '');
 
     if (runningWorkflow) {
-        const createdAt = new Date(runningWorkflow.created_at).getTime();
-        const now = new Date().getTime();
-        const runningTime = Math.floor((now - createdAt) / 1000);
-        setHoverInfo(`Workflow is running\nRunning time: ${runningTime}s.`);
+        const createdAt = new Date(runningWorkflow.created_at);
+        const runningTime = formatDistanceToNow(createdAt);
+        setHoverInfo(`Workflow is running\nRunning time: ${runningTime}.`);
     }
 
     return !!runningWorkflow;
