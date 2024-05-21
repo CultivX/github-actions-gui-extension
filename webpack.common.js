@@ -50,7 +50,7 @@ module.exports = {
                     to: path.resolve('dist')
                 },
                 {
-                    from: path.resolve('src/static/icon48.png'), 
+                    from: path.resolve('src/static/actions-icon.png'), 
                     to: path.resolve('dist')
                 },
                 {

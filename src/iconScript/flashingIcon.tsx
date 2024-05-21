@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Octokit } from "octokit";
 import api from "../services/gh-api";
 import "../styles.css";
+import { getStorageData, fetchData } from '../github-access/github-access';
 
 
 const FlashingIcon = (info) => {
@@ -21,10 +22,10 @@ const FlashingIcon = (info) => {
         if (ghToken && shouldPoll) {
             try {
                 const octokit = new Octokit({ auth: ghToken });
-                fetchData(octokit);
+                fetchData(octokit, info, setIsFlashing, setShouldPoll, setHeadBranch, setHoverInfo);
                 const intervalId = setInterval(() => {
                     if (shouldPoll) {
-                        fetchData(octokit);
+                        fetchData(octokit, info, setIsFlashing, setShouldPoll, setHeadBranch, setHoverInfo);
                     } else {
                         clearInterval(intervalId);
                     }
@@ -38,27 +39,8 @@ const FlashingIcon = (info) => {
             console.log('Please check your GitHub Token.');
         }
     }, [ghToken, pollingInterval, shouldPoll]);
-    
-
-    interface StorageResult {
-        token?: string;
-        interval?: number;
-    }
 
     const initialize = async () => {
-        // Get stored values for token and interval
-        const getStorageData = (): Promise<StorageResult> => {
-            return new Promise((resolve, reject) => {
-                chrome.storage.sync.get(['token', 'interval'], (result: StorageResult) => {
-                    if (chrome.runtime.lastError) {
-                        reject(chrome.runtime.lastError);
-                    } else {
-                        resolve(result);
-                    }
-                });
-            });
-        };
-    
         const result = await getStorageData();
         if (result.token) {
             setGHToken(result.token);
@@ -68,37 +50,7 @@ const FlashingIcon = (info) => {
         }
     };
 
-    const fetchData = async (octokit) => {
-        try {
-            setIsFlashing(await accessGitHub(info, octokit));
-        } catch (error) {
-            if (error.status === 401) {
-                console.error('Error: Bad credentials. Please check your GitHub Token.');
-            } else {
-                console.error('Error:', error);
-            }
-            setShouldPoll(false);
-        }
-    };
 
-    const accessGitHub = async (info, octokit) => {
-        const { data } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs', {
-            owner: info.ownerName,
-            repo: info.repoName
-        })
-
-        const runningWorkflow = data.workflow_runs.find(run => run.status === "in_progress" || run.status === "queued" || run.status === "waiting");
-        setHeadBranch(runningWorkflow ? runningWorkflow.head_branch: '');
-
-        if (runningWorkflow) {
-            const createdAt = new Date(runningWorkflow.created_at).getTime();
-            const now = new Date().getTime();
-            const runningTime = Math.floor((now - createdAt) / 1000);
-            setHoverInfo(`Workflow is running\nRunning time: ${runningTime}s.`);
-        }
-
-        return !!runningWorkflow;
-    };
 
     return (
         <div className="relative has-tooltip">
