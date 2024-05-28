@@ -50,7 +50,7 @@ const WorkflowStatus = (info) => {
     };
 
     return (
-        <div>
+        <div className="mt-3 px-lg-5 color-fg-muted">
             {isRunning ? hoverInfo : 'No running workflow'}
         </div>
     );
