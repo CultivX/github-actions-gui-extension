@@ -18,9 +18,9 @@ export const getStorageData = (): Promise<StorageResult> => {
     });
 };
 
-export const fetchData = async (octokit, info, setIsFlashing, setShouldPoll, setHeadBranch, setHoverInfo) => {
+export const fetchData = async (octokit, info, setIsRunning, setShouldPoll, setHeadBranch, setHoverInfo) => {
     try {
-        setIsFlashing(await accessGitHub(info, octokit, setHeadBranch, setHoverInfo));
+        setIsRunning(await accessGitHub(info, octokit, setHeadBranch, setHoverInfo));
     } catch (error) {
         if (error.status === 401) {
             console.error('Error: Bad credentials. Please check your GitHub Token.');

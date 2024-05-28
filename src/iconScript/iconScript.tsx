@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import FlashingIcon from './flashingIcon';
+import WorkflowStatus from './workflowStatus';
 
 
 const IconScript = () => {
@@ -55,6 +56,23 @@ const IconScript = () => {
     })
   }
 
+  const addStatusLine = () => {
+    // const targetElement = document.querySelector('#repo-title-component');
+    const targetElement = document.querySelector('#repository-container-header');
+
+    var currentUrl = window.location.href;
+    const ownerName = currentUrl.split("/")[3];
+    const repoName = currentUrl.split("/")[4];
+
+    if (!targetElement.querySelector('.status-line')) {
+      const statusContainer = document.createElement('div');
+      statusContainer.classList.add('status-line');
+      targetElement.appendChild(statusContainer);
+      const statusRoot = createRoot(statusContainer);
+      statusRoot.render(<WorkflowStatus ownerName={ownerName} repoName={repoName}/>)
+    }
+  }
+
   // Listening Dom
   const observer = new MutationObserver((mutations) => {
     const mutation = mutations[0];
@@ -70,6 +88,12 @@ const IconScript = () => {
       const org_repos = document.querySelector('.org-repos.repo-list');
       if (org_repos) {
         addSvgIcon('.private.source.d-block', '.color-fg-muted.f6');
+      }
+
+      // for repostory page
+      const is_repo_title_component = document.querySelector('#repo-title-component');
+      if (is_repo_title_component) {
+        addStatusLine();
       }
     }
   });
