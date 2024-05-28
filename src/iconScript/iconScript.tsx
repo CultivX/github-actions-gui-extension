@@ -66,7 +66,16 @@ const IconScript = () => {
 
     if (!targetElement.querySelector('.status-line')) {
       const statusContainer = document.createElement('div');
-      statusContainer.classList.add('status-line');
+      statusContainer.classList.add(
+        'status-line',
+        'd-flex',
+        'flex-wrap',
+        'flex-justify-end',
+        'container-xl',
+        'px-3',
+        'px-md-4',
+        'px-lg-5'
+      );
       targetElement.appendChild(statusContainer);
       const statusRoot = createRoot(statusContainer);
       statusRoot.render(<WorkflowStatus ownerName={ownerName} repoName={repoName}/>)
