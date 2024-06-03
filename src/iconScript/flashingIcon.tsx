@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Octokit } from "octokit";
-import api from "../services/gh-api";
 import "../styles.css";
 import { getStorageData, fetchData } from '../github-access/github-access';
 

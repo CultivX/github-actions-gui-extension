@@ -3,7 +3,7 @@
     "name": "GitHub Workflow Extension",
     "version": "1.1",
     "description": "Local Developement",
-    "permissions": ["storage", "tabs"],
+    "permissions": ["storage", "tabs", "notifications"],
     "host_permissions": ["https://github.com/*"],
     "action": {
       "default_popup": "popup.html",
@@ -20,6 +20,9 @@
         "js": ["iconScript.js"]
       }
     ],
+    "background": {
+      "service_worker": "service_worker.js"
+    },
     "icons": {
       "16": "actions-icon.png",
       "48": "actions-icon.png",

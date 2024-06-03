@@ -12,7 +12,8 @@ module.exports = {
     entry: {
         popup: path.resolve('./src/popup/popup.tsx'),
         contentScript: path.resolve('./src/workflow/index.tsx'),
-        iconScript: path.resolve('./src/iconScript/iconScript.tsx')
+        iconScript: path.resolve('./src/iconScript/iconScript.tsx'),
+        service_worker: path.resolve('./src/service_worker/service_worker.ts')
     },
     module: {
         rules: [
