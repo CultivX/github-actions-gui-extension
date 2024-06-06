@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Octokit } from "octokit";
 import "../styles.css";
-import { getStorageData, fetchData } from '../github-access/github-access';
+import { getGitHubToken, fetchData } from '../github-access/github-access';
 
 
 const FlashingIcon = (info) => {
@@ -40,7 +40,7 @@ const FlashingIcon = (info) => {
     }, [ghToken, pollingInterval, shouldPoll]);
 
     const initialize = async () => {
-        const result = await getStorageData();
+        const result = await getGitHubToken();
         if (result.token) {
             setGHToken(result.token);
         }

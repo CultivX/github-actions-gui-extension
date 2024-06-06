@@ -1,6 +1,6 @@
 import { formatDistanceToNow } from 'date-fns';
 
-export const getStorageData = (): Promise<{ token?: string; interval?: number }> => {
+export const getGitHubToken = (): Promise<{ token?: string; interval?: number }> => {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get(['token', 'interval'], (result) => {
             if (chrome.runtime.lastError) {
