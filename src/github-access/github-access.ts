@@ -1,4 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
+import { Octokit } from "octokit";
 
 export const getGitHubToken = (): Promise<{ token?: string; interval?: number }> => {
     return new Promise((resolve, reject) => {
@@ -42,3 +43,14 @@ export const accessGitHub = async (info, octokit, setHeadBranch, setHoverInfo) =
 
     return !!runningWorkflow;
 };
+
+export const listRunsForWorkflow = async (ownerName, repoName, status) => {
+    const gitHubToken = await getGitHubToken();
+    const octokit = new Octokit({ auth: gitHubToken.token });
+    const { data } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs', {
+        owner: ownerName,
+        repo: repoName,
+        status: status
+    });
+    return data.workflow_runs;
+}

@@ -24,18 +24,13 @@ const Config = () => {
     const handleSaveButton = () => {
         chrome.storage.sync.set({ token: token, interval: interval }, () => {
             console.log('Token and interval saved');
-            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-                if (tabs[0] && tabs[0].id) {
-                    chrome.tabs.reload(tabs[0].id);
-                }
-            });
         });
     };
     
     return (
         <div>
             <div className="relative has-tooltip mb-6">
-                <button className="btn btn-blue" type="submit" onClick={handleGenerateTokenClick}>
+                <button className="btn btn-blue" type="button" onClick={handleGenerateTokenClick}>
                     Generate New Token
                 </button>
                 <div className='tooltip absolute rounded shadow-lg p-1 bg-gray-600 text-dark-text'>
@@ -73,14 +68,14 @@ const Config = () => {
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                     Notification Level:
                 </label>
-                <div class="inline-flex rounded-md shadow-sm mb-6" role="group">
-                    <button type="button" class="px-4 py-2 text-sm font-medium btn-blue border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+                <div className="inline-flex rounded-md shadow-sm mb-6" role="group">
+                    <button type="button" className="px-4 py-2 text-sm font-medium btn-blue border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
                         All
                     </button>
-                    <button type="button" class="px-4 py-2 text-sm font-medium btn-blue border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+                    <button type="button" className="px-4 py-2 text-sm font-medium btn-blue border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
                         Interruption Only
                     </button>
-                    <button type="button" class="px-4 py-2 text-sm font-medium btn-blue border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+                    <button type="button" className="px-4 py-2 text-sm font-medium btn-blue border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
                         None
                     </button>
                 </div>
