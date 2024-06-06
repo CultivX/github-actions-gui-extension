@@ -7,7 +7,7 @@ import './popup.css'
 import "../styles.css";
 
 const Popup = () => {
-    const [activeTab, setActiveTab] = useState<String>('Repo List');
+    const [activeTab, setActiveTab] = useState<String>('Manage Repos');
     const [tabs, setTabs] = useState<string[]>([
         'Repo List',
         'Manage Repos',
@@ -16,7 +16,7 @@ const Popup = () => {
 
     return (
         <div className="text-sm font-medium text-center text-gray-500">
-            <ul className="flex flex-wrap -mb-px">
+            <ul className="flex flex-wrap">
                 {tabs.map(tab => (
                     <li
                         key={tab}
@@ -28,7 +28,7 @@ const Popup = () => {
                 ))}
             </ul>
 
-            <div className="mt-4">
+            <div className="pb-4 mt-4">
                 {activeTab === 'Repo List' && <RepoList />}
                 {activeTab === 'Manage Repos' && <ManageRepos />}
                 {activeTab === 'Config' && <Config />}

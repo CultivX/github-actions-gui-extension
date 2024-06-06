@@ -1,18 +1,12 @@
 import { formatDistanceToNow } from 'date-fns';
 
-interface StorageResult {
-    token?: string;
-    interval?: number;
-}
-
-// Get stored values for token and interval
-export const getStorageData = (): Promise<StorageResult> => {
+export const getStorageData = (): Promise<{ token?: string; interval?: number }> => {
     return new Promise((resolve, reject) => {
-        chrome.storage.sync.get(['token', 'interval'], (result: StorageResult) => {
+        chrome.storage.sync.get(['token', 'interval'], (result) => {
             if (chrome.runtime.lastError) {
                 reject(chrome.runtime.lastError);
             } else {
-                resolve(result);
+                resolve(result as { token?: string; interval?: number });
             }
         });
     });

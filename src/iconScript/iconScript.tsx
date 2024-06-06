@@ -60,9 +60,9 @@ const IconScript = () => {
     const mutation = mutations[0];
     if (mutation && mutation.type === 'childList') {
       // for repositories page
-      const components = document.querySelectorAll('.Box-sc-g0xbh4-0.listviewitem');
+      const components = document.querySelectorAll('.Box-sc-g0xbh4-0.list-view-item');
       if (components.length > 0) {
-        addSvgIcon('.Box-sc-g0xbh4-0.listviewitem', '.NuYbP');
+        addSvgIcon('.Box-sc-g0xbh4-0.list-view-item', '.NuYbP');
         // observer.disconnect();
       }
 

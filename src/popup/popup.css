@@ -1,12 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import '../styles.css';
 
 body {
     width: 400px;
     height: 600px;
     padding: 15px;
-    background-color: #0d1117;
+    background-color: #e6fccf;
 }
 
 .popup-tab {
@@ -16,5 +17,5 @@ body {
     @apply text-blue-600 border-blue-600;
 }
 .popup-tab:hover {
-    @apply text-gray-300 border-gray-300;
+    @apply text-blue-300 border-blue-300;
 }
