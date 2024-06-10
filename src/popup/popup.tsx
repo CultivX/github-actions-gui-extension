@@ -7,7 +7,7 @@ import "./popup.css";
 import "../styles.css";
 
 const Popup = () => {
-  const [activeTab, setActiveTab] = useState<String>("Manage Repos");
+  const [activeTab, setActiveTab] = useState<String>("Config");
   const [tabs, setTabs] = useState<string[]>([
     "Repo List",
     "Manage Repos",
