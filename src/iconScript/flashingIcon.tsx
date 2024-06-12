@@ -63,7 +63,7 @@ const FlashingIcon = (info) => {
 
   return (
     <div className="relative has-tooltip">
-      <div className="tooltip absolute rounded shadow-lg p-1 bg-gray-600 text-dark-text left-full ml-2 top-0 whitespace-nowrap">
+      <div className="tooltip absolute shadow-lg p-1 bg-gray-600 text-dark-text left-full ml-2 top-0 whitespace-nowrap">
         {isFlashing ? hoverInfo : "No running workflow"}
       </div>
       <a

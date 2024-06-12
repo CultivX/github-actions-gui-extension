@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
-import FlashingIcon from './flashingIcon';
-
+import React, { useState, useEffect } from "react";
+import { createRoot } from "react-dom/client";
+import FlashingIcon from "./flashingIcon";
+import {
+  listRunsForWorkflow,
+  checkStatusForRuns,
+} from "../github-access/github-access";
 
 const IconScript = () => {
   // add style for flashing animation
@@ -59,8 +62,8 @@ const IconScript = () => {
           <FlashingIcon ownerName={ownerName} repoName={repoName} />
         );
       }
-    })
-  }
+    });
+  };
 
   // Listening Dom
   const observer = new MutationObserver((mutations) => {
@@ -82,7 +85,9 @@ const IconScript = () => {
       }
 
       // for repostory page
-      const is_repo_title_component = document.querySelector('#repo-title-component');
+      const is_repo_title_component = document.querySelector(
+        "#repo-title-component"
+      );
       if (is_repo_title_component) {
         addStatusLine();
       }
