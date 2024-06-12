@@ -1,34 +1,37 @@
 {
-    "manifest_version": 3,
-    "name": "GitHub Workflow Extension",
-    "version": "1.2.1",
-    "description": "The GitHub Actions Status Monitor allows developers to efficiently track the status and performance of their GitHub Actions workflows directly from the repositories page.",
-    "permissions": ["storage", "tabs"],
-    "host_permissions": ["https://github.com/*"],
-    "action": {
-      "default_popup": "popup.html",
-      "default_icon": {
-        "16": "actions-icon.png",
-        "48": "actions-icon.png",
-        "128": "actions-icon.png"
-      }
-    },
-    "content_scripts": [
-      {
-        "matches": ["https://github.com/*"],
-        "css": ["iconScript.css"],
-        "js": ["iconScript.js"]
-      }
-    ],
-    "icons": {
+  "manifest_version": 3,
+  "name": "GitHub Workflow Extension",
+  "version": "1.2.1",
+  "description": "The GitHub Actions Status Monitor allows developers to efficiently track the status and performance of their GitHub Actions workflows directly from the repositories page.",
+  "permissions": ["storage", "tabs", "notifications"],
+  "host_permissions": ["https://github.com/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
       "16": "actions-icon.png",
       "48": "actions-icon.png",
       "128": "actions-icon.png"
-    },
-    "web_accessible_resources": [
-      {
-        "resources": ["workflow.svg"],
-        "matches": ["<all_urls>"]
-      }
-    ]
-  }
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*"],
+      "css": ["iconScript.css"],
+      "js": ["iconScript.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "service_worker.js"
+  },
+  "icons": {
+    "16": "actions-icon.png",
+    "48": "actions-icon.png",
+    "128": "actions-icon.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["workflow.svg"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
