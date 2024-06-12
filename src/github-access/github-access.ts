@@ -21,13 +21,11 @@ export const fetchData = async (
   info,
   setIsFlashing,
   setShouldPoll,
-  setHeadBranch,
+  setIconHref,
   setHoverInfo
 ) => {
   try {
-    setIsFlashing(
-      await accessGitHub(info, octokit, setHeadBranch, setHoverInfo)
-    );
+    setIsFlashing(await accessGitHub(info, octokit, setIconHref, setHoverInfo));
   } catch (error) {
     if (error.status === 401) {
       console.error("Error: Bad credentials. Please check your GitHub Token.");
@@ -38,12 +36,7 @@ export const fetchData = async (
   }
 };
 
-export const accessGitHub = async (
-  info,
-  octokit,
-  setHeadBranch,
-  setHoverInfo
-) => {
+const accessGitHub = async (info, octokit, setIconHref, setHoverInfo) => {
   const { data } = await octokit.request(
     "GET /repos/{owner}/{repo}/actions/runs",
     {
@@ -53,17 +46,29 @@ export const accessGitHub = async (
   );
 
   const runningWorkflow = data.workflow_runs.find(
-    (run) =>
-      run.status === "in_progress" ||
-      run.status === "queued" ||
-      run.status === "waiting"
+    (run) => run.status === "in_progress"
   );
-  setHeadBranch(runningWorkflow ? runningWorkflow.head_branch : "");
+  const queuedWorkflow = data.workflow_runs.find(
+    (run) => run.status === "queued" || run.status === "waiting"
+  );
+  const firstWorkflowRunId = data.workflow_runs[0];
 
   if (runningWorkflow) {
+    setIconHref("runs/" + runningWorkflow.id);
     const createdAt = new Date(runningWorkflow.created_at);
     const runningTime = formatDistanceToNow(createdAt);
     setHoverInfo(`Workflow is running\nRunning time: ${runningTime}.`);
+  } else if (queuedWorkflow) {
+    setIconHref("runs/" + queuedWorkflow.id);
+
+    const createdAt = new Date(queuedWorkflow.created_at);
+    const runningTime = formatDistanceToNow(createdAt);
+    setHoverInfo(`Workflow is running\nRunning time: ${runningTime}.`);
+  } else if (firstWorkflowRunId) {
+    // return the latest workflow run id
+    setIconHref("runs/" + firstWorkflowRunId.id);
+  } else {
+    setIconHref("");
   }
 
   return !!runningWorkflow;
