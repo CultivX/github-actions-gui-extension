@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
 import FlashingIcon from "./flashingIcon";
 import {

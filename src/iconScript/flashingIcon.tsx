@@ -7,11 +7,12 @@ const FlashingIcon = (info) => {
   const [isFlashing, setIsFlashing] = useState(false);
   const [iconHref, setIconHref] = useState("");
   const [ghToken, setGHToken] = useState("");
-  const [hoverInfo, setHoverInfo] = useState("Workflow is running");
+  const [hoverInfo, setHoverInfo] = useState("");
   const [pollingInterval, setPollingInterval] = useState(5000);
   const [shouldPoll, setShouldPoll] = useState(true);
 
   useEffect(() => {
+    setHoverInfo("Workflow is running");
     initialize();
   }, []);
 
