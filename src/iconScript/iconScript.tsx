@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import FlashingIcon from "./flashingIcon";
+import WorkflowStatus from "./workflowStatus";
 import {
   listRunsForWorkflow,
   checkStatusForRuns,
@@ -63,6 +64,36 @@ const IconScript = () => {
         );
       }
     });
+  };
+
+  const addStatusLine = () => {
+    // const targetElement = document.querySelector('#repo-title-component');
+    const targetElement = document.querySelector(
+      "#repository-container-header"
+    );
+
+    var currentUrl = window.location.href;
+    const ownerName = currentUrl.split("/")[3];
+    const repoName = currentUrl.split("/")[4];
+
+    if (!targetElement.querySelector(".status-line")) {
+      const statusContainer = document.createElement("div");
+      statusContainer.classList.add(
+        "status-line",
+        "d-flex",
+        "flex-wrap",
+        "flex-justify-end",
+        "container-xl",
+        "px-3",
+        "px-md-4",
+        "px-lg-5"
+      );
+      targetElement.appendChild(statusContainer);
+      const statusRoot = createRoot(statusContainer);
+      statusRoot.render(
+        <WorkflowStatus ownerName={ownerName} repoName={repoName} />
+      );
+    }
   };
 
   // Listening Dom
