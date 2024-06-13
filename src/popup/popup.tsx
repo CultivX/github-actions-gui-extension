@@ -4,6 +4,7 @@ import RepoList from "./repoList";
 import ManageRepos from "./manageRepos";
 import Config from "./config";
 import "./popup.css";
+import "../styles.css";
 
 const Popup = () => {
   const [activeTab, setActiveTab] = useState("");
