@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import RepoList from "./repoList";
 import ManageRepos from "./manageRepos";
@@ -7,12 +7,16 @@ import "./popup.css";
 import "../styles.css";
 
 const Popup = () => {
-  const [activeTab, setActiveTab] = useState<String>("Config");
+  const [activeTab, setActiveTab] = useState("");
   const [tabs, setTabs] = useState<string[]>([
     "Repo List",
     "Manage Repos",
     "Config",
   ]);
+
+  useEffect(() => {
+    setActiveTab("Config");
+  }, []);
 
   return (
     <div className="text-sm font-medium text-center text-gray-500">

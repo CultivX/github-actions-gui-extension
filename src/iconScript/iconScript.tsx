@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
-import FlashingIcon from './flashingIcon';
-
+import React from "react";
+import { createRoot } from "react-dom/client";
+import FlashingIcon from "./flashingIcon";
+import WorkflowStatus from "./workflowStatus";
+import {
+  listRunsForWorkflow,
+  checkStatusForRuns,
+} from "../github-access/github-access";
 
 const IconScript = () => {
   // add style for flashing animation
@@ -59,8 +63,38 @@ const IconScript = () => {
           <FlashingIcon ownerName={ownerName} repoName={repoName} />
         );
       }
-    })
-  }
+    });
+  };
+
+  const addStatusLine = () => {
+    // const targetElement = document.querySelector('#repo-title-component');
+    const targetElement = document.querySelector(
+      "#repository-container-header"
+    );
+
+    var currentUrl = window.location.href;
+    const ownerName = currentUrl.split("/")[3];
+    const repoName = currentUrl.split("/")[4];
+
+    if (!targetElement.querySelector(".status-line")) {
+      const statusContainer = document.createElement("div");
+      statusContainer.classList.add(
+        "status-line",
+        "d-flex",
+        "flex-wrap",
+        "flex-justify-end",
+        "container-xl",
+        "px-3",
+        "px-md-4",
+        "px-lg-5"
+      );
+      targetElement.appendChild(statusContainer);
+      const statusRoot = createRoot(statusContainer);
+      statusRoot.render(
+        <WorkflowStatus ownerName={ownerName} repoName={repoName} />
+      );
+    }
+  };
 
   // Listening Dom
   const observer = new MutationObserver((mutations) => {
@@ -82,7 +116,9 @@ const IconScript = () => {
       }
 
       // for repostory page
-      const is_repo_title_component = document.querySelector('#repo-title-component');
+      const is_repo_title_component = document.querySelector(
+        "#repo-title-component"
+      );
       if (is_repo_title_component) {
         addStatusLine();
       }

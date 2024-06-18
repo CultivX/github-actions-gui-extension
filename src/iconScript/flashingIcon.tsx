@@ -1,65 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { Octokit } from "octokit";
 import "../styles.css";
-import { getGitHubToken, fetchData } from "../github-access/github-access";
+import { accessGitHub } from "../github-access/github-access";
 
 const FlashingIcon = (info) => {
+  const [ghToken, setGHToken] = useState("");
+  const [pollingInterval, setPollingInterval] = useState(5000);
   const [isFlashing, setIsFlashing] = useState(false);
   const [iconHref, setIconHref] = useState("");
-  const [ghToken, setGHToken] = useState("");
-  const [hoverInfo, setHoverInfo] = useState("Workflow is running");
-  const [pollingInterval, setPollingInterval] = useState(5000);
-  const [shouldPoll, setShouldPoll] = useState(true);
+  const [hoverInfo, setHoverInfo] = useState("");
 
   useEffect(() => {
-    initialize();
+    setHoverInfo("Workflow is running");
+    chrome.storage.sync.get(["token", "interval"], (result) => {
+      if (chrome.runtime.lastError) {
+        console.error(chrome.runtime.lastError);
+      } else {
+        setGHToken(result.token);
+        setPollingInterval(result.interval);
+      }
+    });
   }, []);
 
   useEffect(() => {
-    if (ghToken && shouldPoll) {
+    if (ghToken) {
       try {
-        const octokit = new Octokit({ auth: ghToken });
-        fetchData(
-          octokit,
-          info,
-          setIsFlashing,
-          setShouldPoll,
-          setIconHref,
-          setHoverInfo
-        );
-        const intervalId = setInterval(() => {
-          if (shouldPoll) {
-            fetchData(
-              octokit,
-              info,
-              setIsFlashing,
-              setShouldPoll,
-              setIconHref,
-              setHoverInfo
-            );
+        const intervalId = setInterval(async () => {
+          const result = await accessGitHub(info, ghToken);
+          if (result) {
+            setIconHref(result.iconHref);
+            if (result.hoverInfo) {
+              setIsFlashing(true);
+              setHoverInfo(result.hoverInfo);
+            } else {
+              setIsFlashing(false);
+              setHoverInfo("No running workflow");
+            }
           } else {
-            clearInterval(intervalId);
+            console.log("error: accessGitHub");
+            setIsFlashing(false);
           }
         }, pollingInterval);
         return () => clearInterval(intervalId);
       } catch (error) {
         console.error("Error:", error);
-        setShouldPoll(false);
       }
     } else {
       console.log("Please check your GitHub Token.");
     }
-  }, [ghToken, pollingInterval, shouldPoll]);
-
-  const initialize = async () => {
-    const result = await getGitHubToken();
-    if (result.token) {
-      setGHToken(result.token);
-    }
-    if (result.interval) {
-      setPollingInterval(result.interval);
-    }
-  };
+  }, [ghToken, pollingInterval]);
 
   return (
     <div className="relative has-tooltip">
