@@ -2,7 +2,7 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({ running_workflow_list: [] });
 });
 
-const createNotification = (runName, conclusion) => {
+const createNotification = (repoName, runName, conclusion) => {
   chrome.storage.sync.get(["notification_level"], (result) => {
     console.log(result.notification_level);
 
@@ -11,7 +11,7 @@ const createNotification = (runName, conclusion) => {
         {
           type: "basic",
           iconUrl: "actions-icon.png",
-          title: "Workflow runs completed",
+          title: `${repoName} repo runs completed`,
           message: `${runName} workflow runs ${conclusion}, please have a look.`,
         },
         (notificationId) => {
@@ -30,7 +30,7 @@ const createNotification = (runName, conclusion) => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "createNotification") {
     const params = message.params;
-    createNotification(params.runName, params.conclusion);
+    createNotification(params.repoName, params.runName, params.conclusion);
     sendResponse({ status: "notification creating" });
   }
 });
