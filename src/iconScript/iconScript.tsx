@@ -191,6 +191,8 @@ const IconScript = () => {
           repoName: runs.repoName,
           runName: runs.runName,
           conclusion: runsStatus.conclusion,
+          ownerName: runs.ownerName,
+          runsId: runs.runId,
         };
 
         if (
