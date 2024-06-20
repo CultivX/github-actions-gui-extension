@@ -34,15 +34,15 @@ export const accessGitHub = async (info, ghToken) => {
   );
 
   if (runningWorkflow) {
-    const createdAt = new Date(runningWorkflow.created_at);
-    const runningTime = formatDistanceToNow(createdAt);
+    const runStartAt = new Date(runningWorkflow.run_started_at);
+    const runningTime = formatDistanceToNow(runStartAt);
     return {
       iconHref: "runs/" + runningWorkflow.id,
       hoverInfo: `Workflow is running\nRunning time: ${runningTime}.`,
     };
   } else if (queuedWorkflow) {
-    const createdAt = new Date(queuedWorkflow.created_at);
-    const runningTime = formatDistanceToNow(createdAt);
+    const runStartAt = new Date(queuedWorkflow.run_started_at);
+    const runningTime = formatDistanceToNow(runStartAt);
     return {
       iconHref: "runs/" + runningWorkflow.id,
       hoverInfo: `Workflow is running\nRunning time: ${runningTime}.`,
